@@ -1,0 +1,895 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    \usepackage{amsmath}
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Hughes\_CNET5050\_Assignment\_1\_Code}
+    \author{by Ryan Hughes\\ Northeastern University\\ Master's in Complex Network Analysis}
+    \date{}
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+
+
+    
+    \paragraph{\newline Introduction.}\label{introduction.}
+
+
+In Part 1 of this assignment, you will analyze selected properties of
+random and real-world networks. Submit your written solutions as a PDF
+prepared using LaTeX or Microsoft Word.
+
+You must also submit all code used to complete the assignment, either as
+separate files or as clearly formatted appendices in your write-up.
+
+Ensure that your code is readable and appropriately commented. If you
+use generative AI tools such as ChatGPT, clearly identify the tasks for
+which they were used and include the relevant prompts and generated
+outputs.
+
+In Part 2, you will develop your ability to critically read and present
+network science research papers.
+
+\paragraph{\newline Part 1}\label{part-1}
+
+\paragraph{I. Random networks {[}25
+marks{]}}\label{i.-random-networks-25-marks}
+
+\paragraph{(a) Consider the Erdos--Renyi random graph model G(n, p) with n =
+1000 nodes and edge probability p = 0.01. Write down the probability
+distribution P(L = l) for the total number of edges L, and explain each
+term in your expression. Then calculate the expected number of edges,
+⟨L⟩, for the specified values of n and
+p.\newline \newline}\label{consider-the-erdosrenyi-random-graph-model-gn-p-with-n-1000-nodes-and-edge-probability-p-0.01.a-write-down-the-probability-distribution-pl-l-for-the-total-number-of-edges-l-and-explain-each-term-in-your-expression.-then-calculate-the-expected-number-of-edges-l-for-the-specified-values-of-n-and-p.}
+
+
+Probability Distribution:
+
+
+\[ P(L)=  {\frac{N(N-1)}{2}\choose L}p^L (1-p)^{\frac{N(N-1)}{2}-L} \]\newline
+
+
+This equation reflects the probability distribution for some probability
+\(p\) , that there are exactly `\(L\) = l' total number of edges in an
+Erdos--Renyi random graph model.\newline
+
+
+To explain further, there are 4 variables represented here:
+\(P(L)\), the probability for \(L\) edges. \(L\), the number of edges. \(N\), the number of nodes.
+And, \(p\), the probability of an edge existing between any pair of nodes.
+
+These variables make up the following key terms of the equation: \newline
+\(p^L\) reflects the probability of drawing an edge an arbitrary
+amount of times equal to the value of \(L\)
+
+\((1-p)^{\frac{N(N-1)}{2}-L}\) reflects the probability we don't draw an edge
+ for all other pairs of nodes that one could place an edge.\newline
+
+Or, in other words: the
+probability we don't make an edge over the remaining ``N choose two
+(\(\frac{N(N-1)}{2}\))'' pairs leftover after \(L\) pairs have been
+processed. And,
+
+\({\frac{N(N-1)}{2}\choose L}\) represents ``N choose 2, choose L'' or,
+the picking of 2 unique nodes, an arbitrary amount of times: \(L\).
+
+\paragraph{Calculating the expected number of edges for
+G(1000,0.01):\newline}\label{calculating-the-expected-number-of-edges-for-g10000.01}
+
+
+
+ $\newline$
+  \[ \langle{L}\rangle = p\frac{N(N-1)}{2} \]
+
+ \[ \langle{L}\rangle = 0.01\frac{1000(1000-1)}{2} \]
+
+ \[ \langle{L}\rangle = 0.01*\frac{1000(999)}{2} \]
+
+ \[ \langle{L}\rangle = 0.01*499500 \]
+
+ \[ \langle{L}\rangle = 4995 \]
+
+\paragraph{(b) Write down the degree distribution P(K = k) and explain each
+term in your expression. Calculate the expected degree, \(\langle{k}\rangle\), for the
+specified values of n and
+p.\newline \newline}\label{write-down-the-degree-distribution-pk-k-and-explain-each-term-in-your-expression.calculate-the-expected-degree-k-for-the-specified-values-of-n-and-p.}
+
+Degree Distribution:
+
+\[ p_k=  {{(N-1)}\choose k}p^k (1-p)^{(N-1)-k} \] $\newline$
+
+This equation reflects the probability distribution for some probability
+\(p\) , that there are exactly `\(K\) = k' total degree in an
+Erdos--Renyi random graph model.
+
+To explain further, there are just 3 variables in this equation.
+\(p_k\), the probability for \(k\) degree to occur for a given node. \(N\), the number of nodes.
+And, \(p\), the probability of an edge existing between any pair of nodes.
+
+These variables make up the following key terms of the equation: \newline
+\(p^k\) reflects the probability of a node having a degree of an arbitrary
+amount of times, equal to the value of \(k\)
+
+\((1-p)^{(N-1)-k}\) in a similar fashion, reflects the probability we
+don't have an edge (i.e., an edge contributing to the degree of a given node) for all other possibilities available.
+
+\({{(N-1)}\choose k}\) represents ``N-1 choose k'' or, the picking of
+one other node, an arbitrary amount of times equal to the value of \(k\).\newline
+
+
+
+Calculating the expected average degree for G(1000,0.01):
+
+ $\newline$
+ \[ \langle{k}\rangle = p(N-1) \]
+
+ \[  \langle{k}\rangle = 0.01(1000-1) \]
+
+ \[  \langle{k}\rangle = 0.01*(999) \]
+
+ \[  \langle{k}\rangle = 9.99 \]
+
+\paragraph{(c) Write down the definition for average local clustering
+coefficient. What is the average local clustering coefficient of G(n, p),
+for the specified values of n and
+p?\newline \newline}\label{c-write-down-the-definition-for-average-local-clustering-coefficient.-what-is-the-average-localclustering-coefficient-of-gn-p-for-the-specified-values-of-n-and-p}
+
+\(C_i = p\), is the definition for the average local clustering
+coefficient in Erdos-Renyi Random Graph models. Due to the fact, the
+placing of any edge is simply \(p\), the odds of a node's neighbors
+being connected (and thereby, there being clustering) is also \(p\).
+
+As such, the average local clustering coefficient for \(G(1000,0.01)\)
+is:
+
+\[C_i = p\]
+
+\[C_i = 0.01\]
+
+\paragraph{(d) Write down the approximate expression for the average
+shortest-path length \(\langle{d}\rangle\) between nodes in G(n, p) and calculate it for
+the specified values of n and
+p.\newline \newline}\label{write-down-the-approximate-expression-for-the-average-shortest-path-length-d-between-nodes-in-gn-p-and-calculate-it-for-the-specified-values-of-n-and-p.}
+
+\(d \approx \frac{logN}{log\langle{k}\rangle}\), is the approximate
+expression for the average shortest-path length, \(\langle{d}\rangle\),
+between nodes in a graph \(G(N,p)\).\newline
+
+Therefore, for \(G(N,p) = G(1000,0.01)\):
+
+\[d \approx \frac{logN}{log\langle{k}\rangle}\]
+
+\[d \approx \frac{log1000}{log9.99}\]
+
+\[d \approx \frac{3}{0.9995655}\]
+
+\[d \approx 3.001304\]
+
+\paragraph{(e) Write a program in Python, or another programming language of
+your choice, that takes n and p as inputs and returns one realization of
+G(n,p).}\label{write-a-program-in-python-or-another-programming-language-of-your-choice-that-takes-nand-p-as-inputs-and-returns-one-realization-of-gn-p.}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{itertools}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{combinations}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats}
+
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{create\PYZus{}erdos\PYZus{}renyi\PYZus{}random\PYZus{}graph}\PY{p}{(}\PY{n}{N}\PY{p}{,} \PY{n}{p}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Creates a Erdos\PYZhy{}Renyi Random Graph with \PYZsq{}N\PYZsq{} nodes and an edge probability, \PYZsq{}p\PYZsq{}}
+
+\PY{l+s+sd}{    Parameters}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    N : int}
+\PY{l+s+sd}{        The number of nodes of the graph to be created.}
+
+\PY{l+s+sd}{    p : float}
+\PY{l+s+sd}{        The probability an edge is placed between any pair of nodes}
+
+\PY{l+s+sd}{    Returns}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.Graph}
+\PY{l+s+sd}{        The resulting erdos\PYZhy{}renyi random graph,undirected, as supported by NetworkX.}
+
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{}Initialize the Graph}
+    \PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{itertools}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{combinations}
+    \PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+    \PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}Initialize chance}
+    \PY{n}{chance} \PY{o}{=} \PY{l+m+mi}{0}
+
+    \PY{c+c1}{\PYZsh{}Add in all the nodes}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{N}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{}Add a node}
+        \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}node}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}Add in all the edges}
+    \PY{k}{for} \PY{n}{node1\PYZus{}id}\PY{p}{,}\PY{n}{node2\PYZus{}id} \PY{o+ow}{in} \PY{n}{combinations}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}\PY{c+c1}{\PYZsh{}For every pair of nodes within G}
+        \PY{n}{chance} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{p}{)}\PY{c+c1}{\PYZsh{}Draw a random chance 0\PYZhy{}100\PYZpc{}}
+        \PY{k}{if} \PY{n}{chance} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{p}\PY{p}{:}\PY{c+c1}{\PYZsh{}If the chance is within the threshold \PYZsq{}p\PYZsq{}}
+            \PY{c+c1}{\PYZsh{}Add an edge between that pair of nodes}
+            \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n}{node1\PYZus{}id}\PY{p}{,}\PY{n}{node2\PYZus{}id}\PY{p}{)}
+    \PY{k}{return} \PY{n}{G}
+
+\PY{n}{N} \PY{o}{=} \PY{l+m+mi}{100}
+\PY{n}{p} \PY{o}{=} \PY{l+m+mf}{0.01}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{erdos\PYZus{}renyi\PYZus{}graph}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{,}\PY{l+m+mf}{0.01}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{create\PYZus{}erdos\PYZus{}renyi\PYZus{}random\PYZus{}graph}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{p}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Graph with 100 nodes and 57 edges
+Graph with 100 nodes and 62 edges
+    \end{Verbatim}
+
+    \paragraph{(i) Generate NG = 100 independent graph realizations. For
+each realization, record the total number of edges. Plot the empirical
+distribution of these 100 edge counts and overlay the theoretical
+distribution derived in part (a). Clearly label the axes
+and legend.}\label{i-generate-ng-100-independent-graph-realizations.-for-each-realization-record-thetotal-number-of-edges.-plot-the-empirical-distribution-of-these-100-edge-counts-andoverlay-the-theoretical-distribution-derived-in-part-a.-clearly-label-the-axes-andlegend.}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{binom}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{special}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{comb}
+
+\PY{n}{N}\PY{o}{=}\PY{l+m+mi}{1000}
+\PY{n}{p}\PY{o}{=}\PY{l+m+mf}{0.01}
+\PY{n}{num\PYZus{}edges\PYZus{}list}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{my\PYZus{}num\PYZus{}edges\PYZus{}list}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{)}\PY{p}{:}
+  \PY{n}{G}\PY{o}{=}\PY{n}{nx}\PY{o}{.}\PY{n}{erdos\PYZus{}renyi\PYZus{}graph}\PY{p}{(}\PY{n}{N}\PY{p}{,} \PY{n}{p}\PY{p}{)}
+  \PY{n}{edges} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{edges}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{n}{num\PYZus{}edges\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{edges}\PY{p}{)}\PY{p}{)}
+  \PY{n}{G2}\PY{o}{=}\PY{n}{create\PYZus{}erdos\PYZus{}renyi\PYZus{}random\PYZus{}graph}\PY{p}{(}\PY{n}{N}\PY{p}{,} \PY{n}{p}\PY{p}{)}
+  \PY{n}{edges} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{G2}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{edges}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{n}{my\PYZus{}num\PYZus{}edges\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{edges}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{L} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{4995}\PY{o}{\PYZhy{}}\PY{l+m+mi}{200}\PY{p}{,}\PY{l+m+mi}{4995}\PY{o}{+}\PY{l+m+mi}{200}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{step}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{dtype} \PY{o}{=} \PY{p}{(}\PY{n+nb}{int}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}Picking a handful of values centered around the average I calculated earlier of: 4995}
+
+
+\PY{n}{part} \PY{o}{=} \PY{p}{(}\PY{n}{N} \PY{o}{*} \PY{p}{(}\PY{n}{N} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{}part = little \PYZsq{}n\PYZsq{} in nCr}
+\PY{c+c1}{\PYZsh{}P\PYZus{}l = comb(part, L)*(p**L)*(1\PYZhy{}p)**(part\PYZhy{}L)}
+\PY{n}{P\PYZus{}l} \PY{o}{=} \PY{n}{binom}\PY{o}{.}\PY{n}{pmf}\PY{p}{(}\PY{n}{L}\PY{p}{,} \PY{n}{part}\PY{p}{,} \PY{n}{p}\PY{p}{)}\PY{c+c1}{\PYZsh{}Finding P\PYZus{}l with the binom() function from scipy since comb() was throwing errors due to too large L}
+
+\PY{c+c1}{\PYZsh{}Starting the plotting process}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}\PY{c+c1}{\PYZsh{}Note: fig is the plot container, while ax (i.e., the \PYZsq{}axes\PYZsq{}) is the plot itself}
+\PY{n}{ax}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{num\PYZus{}edges\PYZus{}list}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Networkx Generated Sample}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Plotting the networkx based random graph empirical data}
+\PY{n}{ax}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{my\PYZus{}num\PYZus{}edges\PYZus{}list}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{My Generated Sample}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Plotting my function based random graph empirical data}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{L}\PY{p}{,}\PY{n}{P\PYZus{}l}\PY{p}{,} \PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Theoretical Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}Plotting the Theoretical}
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{upper right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Empirical vs. Theoretical Distribution of The Total Number of Edges: }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{L}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{L}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability P\PYZus{}L}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{L}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{L}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_CNET5050_Assignment_1_Code_files/Hughes_CNET5050_Assignment_1_Code_3_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{(ii) Generate NG = 100 independent graph realizations. For
+every realization, record the degree of each node and concatenate the
+results into a single sample containing 100 × n degree observations. Plot
+the empirical degree distribution and overlay the
+theoretical distribution derived in part (b). Clearly label the axes and
+legend.}\label{ii-generate-ng-100-independent-graph-realizations.-for-every-realization-record-thedegree-of-each-node-and-concatenate-the-results-into-a-single-sample-containing-100-ndegree-observations.-plot-the-empirical-degree-distribution-and-overlay-the-theoreticaldistribution-derived-in-part-b.-clearly-label-the-axes-and-legend.}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{binom}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{special}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{comb}
+
+\PY{n}{N}\PY{o}{=}\PY{l+m+mi}{1000}
+\PY{n}{p}\PY{o}{=}\PY{l+m+mf}{0.01}
+\PY{n}{num\PYZus{}degree\PYZus{}list}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{my\PYZus{}num\PYZus{}degree\PYZus{}list}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{)}\PY{p}{:}
+  \PY{n}{G}\PY{o}{=}\PY{n}{nx}\PY{o}{.}\PY{n}{erdos\PYZus{}renyi\PYZus{}graph}\PY{p}{(}\PY{n}{N}\PY{p}{,} \PY{n}{p}\PY{p}{)}
+  \PY{n}{degree} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{n}{deg}\PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{degree}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{n}{num\PYZus{}degree\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{deg}\PY{p}{)}
+  \PY{n}{G2}\PY{o}{=}\PY{n}{create\PYZus{}erdos\PYZus{}renyi\PYZus{}random\PYZus{}graph}\PY{p}{(}\PY{n}{N}\PY{p}{,} \PY{n}{p}\PY{p}{)}
+  \PY{n}{degree} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{G2}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{n}{deg}\PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{degree}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{n}{my\PYZus{}num\PYZus{}degree\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{deg}\PY{p}{)}
+
+\PY{n}{k} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mf}{9.99}\PY{o}{\PYZhy{}}\PY{l+m+mf}{9.99}\PY{p}{,}\PY{l+m+mf}{9.99}\PY{o}{+}\PY{l+m+mf}{9.99}\PY{o}{+}\PY{l+m+mf}{0.01}\PY{p}{,}\PY{n}{step}\PY{o}{=}\PY{l+m+mf}{0.01}\PY{p}{,}\PY{n}{dtype} \PY{o}{=} \PY{n+nb}{float}\PY{p}{)}\PY{c+c1}{\PYZsh{}Picking a handful of values centered around the average I calculated earlier of: 9.99}
+
+\PY{n}{part} \PY{o}{=} \PY{p}{(}\PY{n}{N} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{c+c1}{\PYZsh{}part = little \PYZsq{}n\PYZsq{} in nCr}
+\PY{n}{P\PYZus{}l} \PY{o}{=} \PY{n}{comb}\PY{p}{(}\PY{n}{part}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{n}{k}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{p}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{n}{part}\PY{o}{\PYZhy{}}\PY{n}{k}\PY{p}{)}\PY{c+c1}{\PYZsh{}Calculating P\PYZus{}l with comb()}
+\PY{c+c1}{\PYZsh{}P\PYZus{}l = binom.pmf(k, part, p) \PYZsh{}Unfortunately because nCr requires integers as input, I can only calculate P\PYZus{}l for integer numbers with binom()}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{P\PYZus{}l: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{P\PYZus{}l}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{k}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Starting the plotting process}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{}Note: fig is the plot container, while ax (i.e., the \PYZsq{}axes\PYZsq{}) is the plot itself}
+\PY{n}{ax}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{num\PYZus{}degree\PYZus{}list}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Networkx Generated Sample}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{stepfilled}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{c+c1}{\PYZsh{}Plotting Networkx based empirical}
+\PY{n}{ax}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{my\PYZus{}num\PYZus{}degree\PYZus{}list}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{My Generated Sample}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{stepfilled}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{c+c1}{\PYZsh{}Plotting My Random Graph based empirical}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,}\PY{n}{P\PYZus{}l}\PY{p}{,} \PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Theoretical Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}   \PY{c+c1}{\PYZsh{}Plotting the Theoretical}
+
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{upper right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Empirical vs. Theoretical Distribution of The Average Degree: }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{k}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability P\PYZus{}k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+P\_l:  [4.36073206e-05 4.48819923e-05 4.61864302e-05 {\ldots} 1.81293599e-03
+ 1.79979733e-03 1.78674498e-03]
+k:  [0.000e+00 1.000e-02 2.000e-02 {\ldots} 1.997e+01 1.998e+01 1.999e+01]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_CNET5050_Assignment_1_Code_files/Hughes_CNET5050_Assignment_1_Code_5_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{II. Real-world networks {[}25
+marks{]}\newline}\label{ii.-real-world-networks-25-marks}
+
+Download the airport-network.gml dataset from
+https://tinyurl.com/4rfrx4p9. Using the NetworkX library in Python, load
+the dataset with nx.read\_gml and complete the following analyses.
+
+\paragraph{Report the number of nodes n, the number of edges L, the
+average degree ⟨k⟩, and the average local clustering coefficient of the
+network.}\label{report-the-number-of-nodes-n-the-number-of-edges-l-the-average-degree-k-and-the-average-local-clustering-coefficient-of-the-network.}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Reading in the Data}
+\PY{n}{Airport} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{read\PYZus{}gml}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{C:/Users/rh614/OneDrive/Documents/ALL REPOS/Python/Fundamentals\PYZhy{}of\PYZhy{}Complex\PYZhy{}Networks/Assignment\PYZus{}1/data/airport\PYZhy{}network.gml}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{N} \PY{o}{=} \PY{n}{Airport}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{N}\PY{p}{)}
+\PY{n}{L} \PY{o}{=} \PY{n}{Airport}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{L: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{L}\PY{p}{)}
+\PY{n}{avg\PYZus{}deg}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{Airport}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Average Degree: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{avg\PYZus{}deg}\PY{p}{)}
+\PY{n}{C\PYZus{}i} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{average\PYZus{}clustering}\PY{p}{(}\PY{n}{Airport}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C\PYZus{}i: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{C\PYZus{}i}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+N:  1574
+L:  17215
+Average Degree:  21.874205844980942
+C\_i:  0.504152539209577
+    \end{Verbatim}
+
+    \paragraph{Plot the empirical degree distribution using logarithmic
+scales on both axes. Bin the node degrees and plot a normalized
+histogram. Clearly label the axes and briefly comment on the shape of
+the
+distribution.}\label{plot-the-empirical-degree-distribution-using-logarithmic-scales-on-both-axes.-bin-the-node-degrees-and-plot-a-normalized-histogram.-clearly-label-the-axes-and-briefly-comment-on-the-shape-of-the-distribution.}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{deg} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{Airport}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}Gathering the degree values as a list}
+\PY{c+c1}{\PYZsh{}Printing the Min and Max Degree for reference purposes}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Max Deg: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{deg}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Min Deg: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{deg}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Starting the plotting process}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{deg}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{deg}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}Making bins that are log\PYZhy{}scaled}
+
+\PY{c+c1}{\PYZsh{}Plotting the degree distribution histogram using log\PYZhy{}scaled bins}
+\PY{n}{ax}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{deg}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Airport Sample}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{log}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}\PY{c+c1}{\PYZsh{}Making the axes log\PYZhy{}log}
+
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{upper right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Empirical Degree Distribution of the Airport Network}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{L}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability P\PYZus{}L}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Max Deg:  314
+Min Deg:  1
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_CNET5050_Assignment_1_Code_files/Hughes_CNET5050_Assignment_1_Code_9_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The shape of the distribution is approximately a straight line with
+negative slope on the log-log scale. This indicates the data follows a power-law or truncated power-law distribution. The range of the degree distribution varies from
+1 to 314, with nodes having a higher probability of having a degree that is lower (e.g, less
+than 10). 1 being the most probable degree to occur for a given node, and 314 the least probable to occur.
+
+    \paragraph{Overlay a Poisson degree distribution with the same mean
+degree ⟨k⟩ on the empirical degree distribution. Compare the two
+distributions and briefly discuss their main differences.}\label{overlay-a-poisson-degree-distribution-with-the-same-mean-degree-k-on-the-empirical-degree-distribution.-compare-the-two-distributions-and-briefly-discuss-their-main-differences.part-2-50-marks}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{poisson}
+\PY{n}{deg} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{Airport}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}Printing the Min and Max Degree for reference purposes}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Max Deg: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{deg}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Min Deg: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{deg}\PY{p}{)}\PY{p}{)}
+\PY{n}{avg\PYZus{}deg}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{Airport}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{c+c1}{\PYZsh{}Getting the average degree for the Poisson}
+
+\PY{c+c1}{\PYZsh{}Starting the plotting process}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{deg}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{deg}\PY{p}{)}\PY{p}{,}\PY{n}{num}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{)}\PY{c+c1}{\PYZsh{}Making log scaled bins for the empirical data}
+
+\PY{c+c1}{\PYZsh{}Note mu=lambda, k=x}
+\PY{n}{k\PYZus{}values} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{deg}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{deg}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{c+c1}{\PYZsh{}Generating the input to the poisson PDF as all integers of k from empirical\PYZhy{}data}
+\PY{n}{poisson} \PY{o}{=} \PY{n}{poisson}\PY{o}{.}\PY{n}{pmf}\PY{p}{(}\PY{n}{k}\PY{o}{=}\PY{n}{k\PYZus{}values}\PY{p}{,}\PY{n}{mu}\PY{o}{=}\PY{n}{avg\PYZus{}deg}\PY{p}{)}\PY{c+c1}{\PYZsh{}Getting the P\PYZus{}k based on Poisson}
+
+\PY{c+c1}{\PYZsh{}Plotting the Empirical and Poisson Distributions}
+\PY{n}{ax}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{deg}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Airport Sample}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{log}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Plotting the Empirical}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}\PY{c+c1}{\PYZsh{}Setting to log\PYZhy{}log scale}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k\PYZus{}values}\PY{p}{,}\PY{n}{poisson}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Poisson Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{c+c1}{\PYZsh{}Plotting the Poisson}
+
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}\PY{c+c1}{\PYZsh{}Gathering the labels to make legends per plot}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{upper right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{c+c1}{\PYZsh{}Adding legend}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Empirical Degree Distribution of the Airport Network vs Poisson}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{l+m+mf}{10e\PYZhy{}26}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability P\PYZus{}k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Max Deg:  314
+Min Deg:  1
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_CNET5050_Assignment_1_Code_files/Hughes_CNET5050_Assignment_1_Code_12_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Notably, the main difference is that the airport samples distribution
+follows closer to a straight line (i.e., a power law distribution, or
+truncated power law distribution) while the Poisson Distribution on the
+log-log scale doesn't represent the data well. The Poisson sharply cuts
+down in probability before the degree reaches 100, while the airport
+clearly still has many nodes (\emph{relatively speaking}) with degree
+higher than 100.
+
+Acknowledgements: \newline
+AI was not used in the creation of this assignment. I utilized stack-overflow for guidance, especially on how to generate
+the Binomial distribution and Poisson distribution respectively. I also referred to our coding lectures in CNET5051 and
+Python documentation pages for guidance on specific packages (e.g., Numpy, NetworkX, and SciPy) to understand how to leverage
+relevant commands correctly, resolve bugs and fix errors in my code.
+    
+    
+\end{document}
