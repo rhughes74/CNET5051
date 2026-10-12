@@ -83,6 +83,10 @@
                                 % normalem makes italics be italics, not underlines
     \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
     \usepackage{mathrsfs}
+    \usepackage{sectsty}
+    \usepackage{lipsum}
+
+    \allsectionsfont{\centering}
     
 
     
@@ -189,7 +193,7 @@
     % Document title
     \title{Hughes\_CNET5050\_Assignment\_1\_Code}
     \author{by Ryan Hughes\\ Northeastern University\\ Master's in Complex Network Analysis}
-    \date{}
+    \date{\today}
     
     
     
@@ -412,12 +416,9 @@
     
     \maketitle
 
+    \section*{Introduction}\label{introduction.}
 
-    
-    \paragraph{\newline Introduction.}\label{introduction.}
-
-
-In Part 1 of this assignment, you will analyze selected properties of
+    In Part 1 of this assignment, you will analyze selected properties of
 random and real-world networks. Submit your written solutions as a PDF
 prepared using LaTeX or Microsoft Word.
 
@@ -432,7 +433,7 @@ outputs.
 In Part 2, you will develop your ability to critically read and present
 network science research papers.
 
-\paragraph{\newline Part 1}\label{part-1}
+\section*{Part 1}\label{part-1}
 
 \paragraph{I. Random networks {[}25
 marks{]}}\label{i.-random-networks-25-marks}

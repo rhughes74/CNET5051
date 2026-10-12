@@ -1,0 +1,1779 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Hughes\_assignment01}
+    \author{by Ryan Hughes\\ Northeastern University\\ Master's in Complex Network Analysis}
+    \date{\today}
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \paragraph{Question 0 (0 points)}\label{question-0-0-points}
+
+Include your code in a (well-documented, commented, clear)
+assignment01.ipynb file. Scores for the code-based questions below will
+be based on your written responses and code
+
+    \paragraph{Question 1 (20 points)}\label{question-1-20-points}
+
+There are a lot of ways to store network data. Each format generally has
+advantages and disadvantages that make them suited to particular types
+of situations. Let's explore the differences between storing network
+data in a .csv, pickle, or .gml file, and in Elasticsearch, which is
+commonly used for graph database applications.
+
+\emph{For your research, look at the documentation for each approach,
+seek out StackOverflow threads, and consider consulting the Bagrow \&
+Ahn textbook.}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  What are the advantages of each storage approach?
+\end{enumerate}
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  .csv according to
+  https://stackoverflow.com/questions/48770542/what-is-the-difference-between-save-a-pandas-dataframe-to-pickle-and-to-csv,
+  has the advantage of being human readable and cross platform
+\item
+  pickle according to
+  https://stackoverflow.com/questions/48770542/what-is-the-difference-between-save-a-pandas-dataframe-to-pickle-and-to-csv
+  has the advantage of fast saving and loading and being more space
+  efficient (for disk saves) than csv. It also saves the exact
+  representation of the dataframe per how the pandas library sees it,
+  thereby reducing the risk of lost data when converting to csv and
+  back, and can store any binary subject.
+\item
+  .gml, according to Gephi
+  (https://docs.gephi.org/desktop/User\_Manual/Import/GML\_File\_Format/)
+  has the advantage of being a plain text file format with a simple,
+  human-readable syntax used to represent graphs. Storing all nodes,
+  edges and attributes into a single file
+\item
+  Elastisearch
+  (https://stackoverflow.com/questions/57328151/how-does-elasticsearch-store-data)
+  is a vector database solution. It stores data via ``lucene'' a text
+  search engine, that saves data in a custom binary format. It has the
+  advantage of being highly optimized. It also can handle any kind of
+  data: structured, unstructured and vectors, and allows for search
+  engine, analytics engine, geospatial engine and inference service
+  queries on your dataset.
+\end{enumerate}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  What are the disadvantages of each storage approach?
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  .csv according to the textbook can be subject to data loss due to the
+  conversion process. In particular, delimiter collisions where part of
+  the data contains the delimiter innately (e.g., ``,'' in a ``Surname,
+  First Name'') used to separate entries. In addition, .csv is less
+  space efficient than other formats.
+\item
+  pickle according to
+  https://stackoverflow.com/questions/48770542/what-is-the-difference-between-save-a-pandas-dataframe-to-pickle-and-to-csv
+  has the disadvantage of not being as universal and cross-platform as
+  other formats, it may require you to be using the same Python version
+  to save between computers for instance, and is generally not binary
+  stable. It also can introduce potential security vulnerabilities
+  should you be downloading an unknown file in this format that was
+  corrupted or contains malicious code,
+\item
+  .gml according to the textbook has the disadvantage of using a
+  non-standard format. It also is not fully supported by Gephi according
+  to their documentation (particularly for some data structures
+  \emph{though it's not specified which}). It also has the disadvantage
+  of being similarly named to GraphML and Geography Markup Language
+  (also GML).
+\item
+  Elastisearch, according to GeeksForGeeks
+  (https://www.geeksforgeeks.org/elasticsearch/advantages-and-disadvantages-of-elasticsearch/)
+  has the disadvantage of being very complex to setup and maintain as an
+  industry grade database solution. It also is resource intensive
+  requiring sufficient CPU, memory and storage. It also prioritizes
+  performance and scale over consistency and reliability, meaning that
+  there are scenarios where data is not 100\% reliable across the
+  database machines. It also requires expertise and has a steep learning
+  curve to pick-up.
+\end{enumerate}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  At least one of these storage approaches poses a non-trivial security
+  risk. Which one(s) should we worry about, and what is the security
+  risk? Please explain this as simply as possible.
+\end{enumerate}
+
+    .pkl (pickle) may have a security problem according to the official
+python documentation. The exact warning can be found here
+https://docs.python.org/3/library/pickle.html as:
+
+``\emph{Warning: The pickle module is not secure. Only unpickle data you
+trust.}
+
+\emph{It is possible to construct malicious pickle data which will
+execute arbitrary code during unpickling. Never unpickle data that could
+have come from an untrusted source, or that could have been tampered
+with.}
+
+\emph{Consider signing data with hmac if you need to ensure that it has
+not been tampered with.}
+
+\emph{Safer serialization formats such as json may be more appropriate
+if you are processing untrusted data. See Comparison with json.}''
+
+What this means is that when loading in a .pkl file, should that file
+secretly contain code, Python may execute that code rather than simply
+load it as a plain data-frame. As such, if the code is malicious, you
+could unwittingly introduce hackers or malware to your pc.
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  For each storage approach, think of a scenario where that storage
+  approach would be an optimal choice. Explain your reasoning.
+\end{enumerate}
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  .csv can be good when you are working with simple data that you know
+  for certain would not contain potential collisions (e.g., data that is
+  all integers perhaps). It would also be optimal in a scenario when you
+  need to share data widely to many different machines and programs.
+\item
+  pickle can be optimal when you are working with your own data and need
+  a fast and reliable way to store it. If you create the file and do not
+  share it to potential bad actors, you can avoid the security risk
+  related to this format, and thereby take advantage of its reliability,
+  speed and spatial efficiency.
+\item
+  .gml can be optimal when you don't need to share the data very widely
+  but need some of the benefits of .csv (e.g., human-readable) and,
+  cannot store it as such due to delimiter collisions. .gml provides a
+  similar human-readable benefit with the tradeoff of less universality.
+\item
+  Elastisearch, can be optimal when you truly need a long-term
+  industry-grade solution for a large dataset, and want the performance,
+  scalability and unique analytics engine capabilities that can come
+  from this.
+\end{enumerate}
+
+    \paragraph{Question 2 (20 points).}\label{question-2-20-points.}
+
+\emph{Algorithm 11.1 in Bagrow \& Ahn}, the basic edge exchange
+algorithm, modifies a graph in place to produce a null model while
+preserving the degree distribution. It does so by picking two edges at
+random and swapping their endpoints.
+
+    \begin{itemize}
+\tightlist
+\item
+  1: procedure EDGE EXCHANGE(G, t)
+\item
+  2: s ← 0
+\item
+  3: while s \textless{} t do
+\item
+  4: (i, j) ← get random edge(G)
+\item
+  2
+\item
+  5: (u, v) ← get random edge(G)
+\item
+  6: if i = u or i = v or j = u or j = v then
+\item
+  7: continue
+\item
+  8: end if
+\item
+  9: if has edge(G, i, v) or has edge(G, j, u) then
+\item
+  10: continue
+\item
+  11: end if
+\item
+  12: remove edge(G, i, j)
+\item
+  13: remove edge(G, u, v)
+\item
+  14: add edge(G, i, v)
+\item
+  15: add edge(G, j, u)
+\item
+  16: s ← s + 1
+\item
+  17: end while
+\item
+  18: return G
+\item
+  19: end procedure
+\end{itemize}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  (Bagrow \& Ahn Question 11.2) The basic edge exchange algorithm (as
+  shown above) will enter an infinite loop and never end if no allowable
+  exchanges are present. Describe a scenario where you will never be
+  able to find an allowable edge exchange according to this algorithm.
+\end{enumerate}
+
+    One simple edge-case scenario when you will never be able to find an
+allowable edge exchange according to this algorithm is, if you're
+dataset is too small. For instance, in theory, if you had a graph with
+just 1 edge between 2 nodes, this algorithm may never find a pair to
+exchange,
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  (Bagrow \& Ahn Question 11.3) Modify the algorithm to prevent an
+  infinite loop by abandoning the exchange process after reaching a
+  given number of attempts without a successful exchange.
+\end{enumerate}
+
+    \begin{itemize}
+\tightlist
+\item
+  1: procedure EDGE EXCHANGE(G, t) \#Hard time-out when we have missed a
+  total number of times equal to the sum of all edges in the graph.
+\item
+  \textbf{1b: hard\_limit = get\_total\_number\_of\_edges(G)}
+\item
+  2: s ← 0
+\item
+  3: while s \textless{} t and hard\_limit \textgreater{} 0 do
+\item
+  4: (i, j) ← get random edge(G)
+\item
+  5: (u, v) ← get random edge(G)
+\item
+  6: if i = u or i = v or j = u or j = v then
+\item
+  6b: \textbf{hard\_limit -=1}
+\item
+  7: continue
+\item
+  8: end if
+\item
+  9: if has edge(G, i, v) or has edge(G, j, u) then
+\item
+  9b: \textbf{hard\_limit -=1}
+\item
+  10: continue
+\item
+  11: end if
+\item
+  12: remove edge(G, i, j)
+\item
+  13: remove edge(G, u, v)
+\item
+  14: add edge(G, i, v)
+\item
+  15: add edge(G, j, u)
+\item
+  16: s ← s + 1
+\item
+  17: end while
+\item
+  18: return G
+\item
+  19: end procedure
+\end{itemize}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  (Bagrow \& Ahn Question 11.4) Modify the algorithm to preserve
+  \textbf{not only the degrees of every node but also the overall
+  connectivity of the network}. How does this additional constraint make
+  edge exchange more difficult?
+\end{enumerate}
+
+    \begin{itemize}
+\tightlist
+\item
+  1: procedure EDGE EXCHANGE(G, t)
+\item
+  1b: hard\_limit = get\_total\_number\_of\_edges(G) \# Hard time-out
+  when we have missed a total number of times equal to the sum of all
+  edges in the graph.
+\item
+  \textbf{1c: components = nx.connected\_components(G)}
+\item
+  2: s ← 0
+\item
+  3: while s \textless{} t and hard\_limit \textgreater{} 0 do
+\item
+  4: (i, j) ← get random edge(G)
+\item
+  5: (u, v) ← get random edge(G)
+\item
+  5b: if not unique(i,j,u,v) do
+\item
+  5c: (i, j) ← get random edge(G)
+\item
+  5d: (u, v) ← get random edge(G)
+\item
+  5e: hard\_limit -=1
+\item
+  5f: end if
+\item
+  6: if i = u or i = v or j = u or j = v then
+\item
+  6b: hard\_limit -=1
+\item
+  7: continue
+\item
+  8: end if
+\item
+  9: if has edge(G, i, v) or has edge(G, j, u) then
+\item
+  9b: hard\_limit -=1
+\item
+  10: continue
+\item
+  11: end if
+\item
+  11a: all\_in\_the\_same = True
+\item
+  11b: \textbf{for component in components:}
+\item
+  11c: \textbf{if(v in component and i in component) and (u in component
+  and j in component)) or (v not in component and i not in component)
+  and (u not in component and j not in component)):}
+\item
+  11d: \textbf{all\_in\_the\_same = True}
+\item
+  11e: \textbf{end if}
+\item
+  11f: \textbf{else:}
+\item
+  11g: \textbf{all\_in\_the\_same = False}
+\item
+  11h: \textbf{hard\_limit -=1}
+\item
+  11i: \textbf{continue}
+\item
+  11j: \textbf{end else}
+\item
+  11k: \textbf{end for}
+\item
+  11m: \textbf{if all\_in\_the\_same:} \#This ensures prior connectivity
+  remains by checking that all nodes are all apart, or all not apart, of
+  each component
+\item
+  12: remove edge(G, i, j)
+\item
+  13: remove edge(G, u, v)
+\item
+  14: add edge(G, i, v)
+\item
+  15: add edge(G, j, u)
+\item
+  15b: \textbf{end if}
+\item
+  16: s ← s + 1
+\item
+  17: end while
+\item
+  18: return G
+\item
+  19: end procedure
+\end{itemize}
+
+\emph{This additional constraint makes the edge constraint much more
+difficult because it requires that all 4 nodes (corresponding to each
+end of each pair) in addition to must being unique, in order to prevent
+self-loops or parallel edges, must also be apart of all the same
+components in the graph, in order to maintain connectivity levels.}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  (Bagrow \& Ahn Question 11.5) Suppose your network has a binary
+  attribute xi ∈ \{−1, 1\} associated with every node i. Modify the
+  algorithm to preserve the correlation on edges of x. This means that
+  any new edge (a, b) inserted in place of an existing edge (i, j) must
+  have the same attributes (xi, xj ) = (xa, xb). How might this
+  additional constraint make edge exchange more difficult?
+\end{enumerate}
+
+    \begin{itemize}
+\item
+  1: procedure EDGE EXCHANGE(G, t)
+\item
+  1b: hard\_limit = get\_total\_number\_of\_edges(G) \# Hard time-out
+  when we have missed a total number of times equal to the sum of all
+  edges in the graph.
+\item
+  \textbf{1c: attribute = nx.get\_node\_attributes(G)}
+\item
+  2: s ← 0
+\item
+  3: while s \textless{} t and hard\_limit \textgreater{} 0 do
+\item
+  4: (i, j) ← get random edge(G)
+\item
+  5: (u, v) ← get random edge(G)
+\item
+  5b: if not unique(i,j,u,v) do
+\item
+  5c: (i, j) ← get random edge(G)
+\item
+  5d: (u, v) ← get random edge(G)
+\item
+  5e: hard\_limit -=1
+\item
+  5f: end if
+\item
+  \textbf{5g: if ( attribute{[}i{]}!=attribute{[}u{]} or
+  attribute{[}i{]}!=attribute{[}v{]} or}
+  \textbf{attribute{[}j{]}!=attribute{[}u{]} or
+  attribute{[}j{]}!=attribute{[}v{]} )}
+\item
+  **5h: continue
+\item
+  \textbf{5i: hard\_limit -=1}
+\item
+  \textbf{5j: end if}\\
+\item
+  6: if i = u or i = v or j = u or j = v then
+\item
+  6b: hard\_limit -=1
+\item
+  7: continue
+\item
+  8: end if
+\item
+  9: if has edge(G, i, v) or has edge(G, j, u) then
+\item
+  9b: hard\_limit -=1
+\item
+  10: continue
+\item
+  11: end if
+\item
+  12: remove edge(G, i, j)
+\item
+  13: remove edge(G, u, v)
+\item
+  14: add edge(G, i, v)
+\item
+  15: add edge(G, j, u)
+\item
+  16: s ← s + 1
+\item
+  17: end while
+\item
+  18: return G
+\item
+  19: end procedure
+\end{itemize}
+
+\emph{This additional constraint makes the edge constraint much more
+difficult in a similar way to the above algorithm for maintaining
+connectivity. It requires that the new edges to be made consist of the
+same attribute pairs as the previous attribute pairs. Because we are
+removing a specific pair of attributes as a part of replacement, the
+effect is that all attrbitues must be equivalent in order to preserve
+the correlation on edges of x. Depending on how rare this attribute
+status is the number of swaps possible may be small. Note: This logic
+could be cleaned up a bit into if-else statements to make each check
+prior to each possible swap rather than all at once.}
+
+    \subsubsection{\texorpdfstring{\textbf{Question 3 (20
+points).}}{Question 3 (20 points).}}\label{question-3-20-points.}
+
+There are many ways to measure a node's centrality in a network. Pick
+one centrality measure out of \emph{\{betweenness centrality, harmonic
+centrality, percolation centrality\}} and do the following:
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  Write your own function to compute a single node's centrality in a
+  graph. This function should take a networkx graph and one node in the
+  graph as input. As output, it should return a float or integer
+  representing the node's centrality in the graph according to one of
+  the centrality measures listed above.
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{collections}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{Counter}
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{,} \PY{n}{return\PYZus{}simple}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Generate a random graph using the configuration model from a given degree sequence}
+\PY{l+s+sd}{    without using the NetworkX built\PYZhy{}in function.}
+
+\PY{l+s+sd}{    The configuration model generates a random graph that preserves the degree }
+\PY{l+s+sd}{    sequence of nodes by assigning \PYZdq{}stubs\PYZdq{} or \PYZdq{}half\PYZhy{}edges\PYZdq{} to each node and }
+\PY{l+s+sd}{    randomly pairing these stubs to form edges. This process can result in }
+\PY{l+s+sd}{    graphs with self\PYZhy{}loops and parallel edges, which can be removed if needed.}
+
+\PY{l+s+sd}{    Parameters}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    degree\PYZus{}sequence : list of int}
+\PY{l+s+sd}{        A list representing the degree of each node in the graph. The sum of }
+\PY{l+s+sd}{        the degrees in this sequence must be even for the configuration model }
+\PY{l+s+sd}{        to create a valid graph.}
+
+\PY{l+s+sd}{    Returns}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.MultiGraph}
+\PY{l+s+sd}{        A multigraph generated from the given degree sequence. The graph may }
+\PY{l+s+sd}{        contain self\PYZhy{}loops and parallel edges, which are allowed in the }
+\PY{l+s+sd}{        configuration model.}
+
+\PY{l+s+sd}{    Notes}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZhy{} This method works by assigning \PYZdq{}stubs\PYZdq{} or \PYZdq{}half\PYZhy{}edges\PYZdq{} to nodes based on }
+\PY{l+s+sd}{      their degree and then randomly pairing them to form edges. The resulting }
+\PY{l+s+sd}{      graph can have self\PYZhy{}loops and parallel edges.}
+\PY{l+s+sd}{    \PYZhy{} Self\PYZhy{}loops and parallel edges can be removed post\PYZhy{}generation if a simple }
+\PY{l+s+sd}{      graph is required using NetworkX\PYZsq{}s `nx.Graph(G)`.}
+\PY{l+s+sd}{    \PYZhy{} The degree sequence must have an even sum for a valid graph construction. }
+\PY{l+s+sd}{      If the sum of the degrees is odd, no graph can be constructed.}
+
+\PY{l+s+sd}{    Time Complexity}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    The time complexity is O(E), where E is the number of edges in the graph.}
+
+\PY{l+s+sd}{    Example}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} degree\PYZus{}sequence = [3, 3, 2, 2, 1, 1]}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence(degree\PYZus{}sequence)}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} nx.is\PYZus{}graphical(degree\PYZus{}sequence)}
+\PY{l+s+sd}{    True}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+
+    \PY{c+c1}{\PYZsh{} Check if the degree sequence is valid (sum of degrees must be even)}
+    \PY{k}{if} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{l+m+mi}{2} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The sum of the degree sequence must be even.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Create stubs list: node i appears degree\PYZus{}sequence[i] times}
+    \PY{n}{stubs} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{node}\PY{p}{,} \PY{n}{degree} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)}\PY{p}{:}
+        \PY{n}{stubs}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{p}{[}\PY{n}{node}\PY{p}{]} \PY{o}{*} \PY{n}{degree}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Shuffle stubs to randomize the pairing process}
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{shuffle}\PY{p}{(}\PY{n}{stubs}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Initialize an empty multigraph}
+    \PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{MultiGraph}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add nodes to the graph}
+    \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}nodes\PYZus{}from}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Pair stubs to create edges}
+    \PY{k}{while} \PY{n}{stubs}\PY{p}{:}
+        \PY{n}{u} \PY{o}{=} \PY{n}{stubs}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{p}{)}
+        \PY{n}{v} \PY{o}{=} \PY{n}{stubs}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Add the edge to the graph}
+        \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{)}
+
+    \PY{k}{if} \PY{n}{return\PYZus{}simple}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Convert the multigraph to a simple graph (remove parallel edges and self\PYZhy{}loops)}
+        \PY{n}{G\PYZus{}simple} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{n}{G}\PY{p}{)}  \PY{c+c1}{\PYZsh{} This removes parallel edges and self\PYZhy{}loops by default}
+
+        \PY{k}{return} \PY{n}{G\PYZus{}simple}
+
+    \PY{k}{else}\PY{p}{:}
+        \PY{k}{return} \PY{n}{G}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{betweenness\PYZus{}centrality\PYZus{}from\PYZus{}scratch}\PY{p}{(}\PY{n}{G}\PY{p}{,} \PY{n}{node\PYZus{}i}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Calculate the betweenness centrality for each node in a graph from scratch.}
+
+\PY{l+s+sd}{    Betweenness centrality is a measure of the extent to which a node lies on the shortest}
+\PY{l+s+sd}{    paths between other nodes in the network. This function computes the betweenness}
+\PY{l+s+sd}{    centrality for all nodes in the graph `G`.}
+
+\PY{l+s+sd}{    Parameters}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.Graph}
+\PY{l+s+sd}{        The input graph on which the betweenness centrality is calculated. It can}
+\PY{l+s+sd}{        be any type of graph (undirected, directed, etc.) supported by NetworkX.}
+
+\PY{l+s+sd}{    node\PYZus{}i : networkx.Node}
+\PY{l+s+sd}{        The input node on which the betweenness centrality is calculated. }
+\PY{l+s+sd}{        }
+\PY{l+s+sd}{    Returns}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    centrality : float}
+\PY{l+s+sd}{        A float where the value is the corresponding betweenness centrality score as a function of the total number of nodes N, the total number of geodesics for all pairs of nodes in  graph G, and the number of geodesics node\PYZus{}i is part of in said graph, G.}
+
+
+\PY{l+s+sd}{    Time Complexity}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    The overall time complexity is O(N\PYZca{}2) where N is the number of nodes, due to the use of}
+\PY{l+s+sd}{    combinations(G.nodes(), 2) dominating, which provides all \PYZdq{}N choose 2\PYZdq{} pairs of nodes.}
+
+\PY{l+s+sd}{    Notes}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    If unweighted, networkx\PYZsq{}s all\PYZus{}shortest\PYZus{}paths() uses Breadth\PYZhy{}First Search which is O(N), if weighted though, nx.all\PYZus{}shortest\PYZus{}paths() defaults to}
+\PY{l+s+sd}{    Dijkstra\PYZsq{}s which is O(E*N*log(N)), and if negative weights exist then it is O(N*E) due to Bellman\PYZhy{}Ford. All where N is the number of nodes, where E is}
+\PY{l+s+sd}{    the number of edges.}
+\PY{l+s+sd}{    https://networkx.org/documentation/stable/\PYZus{}modules/networkx/algorithms/shortest\PYZus{}paths/unweighted.html}
+
+\PY{l+s+sd}{    Citations}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    Freeman, Linton C. “A Set of Measures of Centrality Based on Betweenness.” Sociometry, vol. 40, no. 1, 1977, pp. 35–41. JSTOR, https://doi.org/10.2307/3033543. Accessed 6 Oct. 2026.}
+
+\PY{l+s+sd}{    Example}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} import networkx as nx}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = nx.karate\PYZus{}club\PYZus{}graph()}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} node\PYZus{}i = 3}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} betweenness\PYZus{}centrality\PYZus{}from\PYZus{}scratch(kcg, node\PYZus{}i)}
+\PY{l+s+sd}{    (3, 0.011909271284271286)}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+    \PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{itertools}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{combinations}
+    \PY{n}{centrality} \PY{o}{=} \PY{l+m+mf}{0.0}
+    \PY{n}{N} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Total number of nodes in the graph}
+
+\PY{+w}{    }\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Grabbing C\PYZus{}B(p\PYZus{}k) =\PYZgt{} C\PYZus{}B(node\PYZus{}i) = \PYZdq{}the overall partial betweenness of point p\PYZus{}k.\PYZdq{}}
+\PY{l+s+sd}{    If there is only 1 geodesic (i.e., shortest path) C\PYZus{}B(p\PYZus{}k) is increased by 1.}
+\PY{l+s+sd}{    Otherwise, C\PYZus{}B(p\PYZus{}k) is increased relative to the proportion of geodesics p\PYZus{}k is apart of}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{k}{for} \PY{n}{a}\PY{p}{,} \PY{n}{b} \PY{o+ow}{in} \PY{n}{combinations}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}\PY{c+c1}{\PYZsh{}For all \PYZdq{}n choose 2\PYZdq{} pairs of nodes...}
+        \PY{k}{if} \PY{n}{node\PYZus{}i} \PY{o+ow}{in} \PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}Excluding cases where node\PYZus{}i is one of those nodes.}
+            \PY{k}{continue}
+        \PY{k}{try}\PY{p}{:}
+            \PY{n}{paths} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{all\PYZus{}shortest\PYZus{}paths}\PY{p}{(}\PY{n}{G}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}... compute all possible shortest paths from this pair}
+        \PY{k}{except} \PY{n}{nx}\PY{o}{.}\PY{n}{NetworkXNoPath}\PY{p}{:}
+            \PY{k}{continue}
+
+        \PY{n}{g\PYZus{}ab} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{paths}\PY{p}{)}\PY{c+c1}{\PYZsh{}The total number of geodesics}
+        \PY{n}{g\PYZus{}ab\PYZus{}i} \PY{o}{=} \PY{l+m+mi}{0}\PY{c+c1}{\PYZsh{}The number of geodesics with node\PYZus{}i in them}
+
+        \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{paths}\PY{p}{:} \PY{c+c1}{\PYZsh{}For all geodesics (shortest paths)...}
+            \PY{k}{if} \PY{n}{node\PYZus{}i} \PY{o+ow}{in} \PY{n}{p}\PY{p}{:}\PY{c+c1}{\PYZsh{}...if node\PYZus{}i is in a geodesic...}
+                \PY{n}{g\PYZus{}ab\PYZus{}i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{}... count it!}
+
+        \PY{n}{centrality} \PY{o}{+}\PY{o}{=} \PY{n}{g\PYZus{}ab\PYZus{}i} \PY{o}{/} \PY{n}{g\PYZus{}ab} \PY{c+c1}{\PYZsh{}C\PYZus{}B(node\PYZus{}i), the sum, of the proportion of geodesics node\PYZus{}i is a part of, for all \PYZdq{}n choose 2\PYZdq{} combinations}
+
+    \PY{n}{max\PYZus{}centrality} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{N}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{N}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{} max possible betweenness centrality}
+    \PY{n}{centrality} \PY{o}{=} \PY{n}{centrality}\PY{o}{/}\PY{n}{max\PYZus{}centrality} \PY{c+c1}{\PYZsh{} betweeness centrality of node\PYZus{}i relative to the max possible betweeness centrality of \PYZsq{}G\PYZsq{}}
+    \PY{k}{return} \PY{n}{centrality}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{n}{kcg} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{karate\PYZus{}club\PYZus{}graph}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{kcg}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}class\PYZus{}\PYZus{}}\PY{p}{)}
+\PY{n}{betweenness\PYZus{}centrality} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{k}{for} \PY{n}{node\PYZus{}i} \PY{o+ow}{in} \PY{n}{kcg}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{betweenness\PYZus{}centrality}\PY{p}{[}\PY{n}{node\PYZus{}i}\PY{p}{]} \PY{o}{=} \PY{n}{betweenness\PYZus{}centrality\PYZus{}from\PYZus{}scratch}\PY{p}{(}\PY{n}{kcg}\PY{p}{,} \PY{n}{node\PYZus{}i}\PY{p}{)}
+\PY{n}{betweenness\PYZus{}centrality} \PY{o}{=} \PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{betweenness\PYZus{}centrality}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{key}\PY{o}{=}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{My Version: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{betweenness\PYZus{}centrality}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Networkx Version: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{betweenness\PYZus{}centrality\PYZus{}official} \PY{o}{=} \PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{betweenness\PYZus{}centrality}\PY{p}{(}\PY{n}{kcg}\PY{p}{,}\PY{p}{)}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{key}\PY{o}{=}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{betweenness\PYZus{}centrality\PYZus{}official}\PY{p}{)}
+
+\PY{n}{pos} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{spring\PYZus{}layout}\PY{p}{(}\PY{n}{kcg}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\PY{n}{nx}\PY{o}{.}\PY{n}{draw}\PY{p}{(}\PY{n}{kcg}\PY{p}{,} \PY{n}{pos}\PY{p}{,} \PY{n}{node\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{150}\PY{p}{,} \PY{n}{edgecolors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{with\PYZus{}labels}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{font\PYZus{}size}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZhy{}small}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{edge\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'networkx.classes.graph.Graph'>
+My Version:
+[(0, 0.4376352813852816), (33, 0.3040749759499759), (32, 0.14524711399711399),
+(2, 0.1436568061568063), (31, 0.13827561327561325), (8, 0.05592682780182779),
+(1, 0.0539366883116883), (13, 0.045863395863395835), (19, 0.03247504810004808),
+(5, 0.02998737373737374), (6, 0.02998737373737374), (27, 0.022333453583453584),
+(23, 0.01761363636363637), (30, 0.014411976911976923), (3,
+0.011909271284271286), (25, 0.0038404882154882154), (29, 0.0029220779220779218),
+(24, 0.0022095959595959595), (28, 0.0017947330447330445), (9,
+0.0008477633477633477), (4, 0.0006313131313131313), (10, 0.0006313131313131313),
+(7, 0.0), (11, 0.0), (12, 0.0), (14, 0.0), (15, 0.0), (16, 0.0), (17, 0.0), (18,
+0.0), (20, 0.0), (21, 0.0), (22, 0.0), (26, 0.0)]
+Networkx Version:
+[(0, 0.43763528138528146), (33, 0.30407497594997596), (32, 0.145247113997114),
+(2, 0.14365680615680618), (31, 0.13827561327561325), (8, 0.05592682780182781),
+(1, 0.053936688311688304), (13, 0.04586339586339586), (19, 0.03247504810004811),
+(5, 0.02998737373737374), (6, 0.029987373737373736), (27, 0.02233345358345358),
+(23, 0.017613636363636363), (30, 0.014411976911976909), (3,
+0.011909271284271283), (25, 0.0038404882154882154), (29, 0.0029220779220779218),
+(24, 0.0022095959595959595), (28, 0.0017947330447330447), (9,
+0.0008477633477633478), (4, 0.0006313131313131313), (10, 0.0006313131313131313),
+(7, 0.0), (11, 0.0), (12, 0.0), (14, 0.0), (15, 0.0), (16, 0.0), (17, 0.0), (18,
+0.0), (20, 0.0), (21, 0.0), (22, 0.0), (26, 0.0)]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_assignment01_files/Hughes_assignment01_23_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \textbf{(b) Augment your function with error handling. It should be able
+to return useful} \textbf{messages when given any of the following:} *
+i. A node that is not in the graph * ii. A graph that is not a networkx
+object * iii. A graph with no connectivity (or not enough connectivity
+to produce a valid centrality result) * iv. Any situation that might
+produce numerical difficulties (e.g.~dividing by zero) for your chosen
+centrality measure
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{betweenness\PYZus{}centrality\PYZus{}from\PYZus{}scratch}\PY{p}{(}\PY{n}{G}\PY{p}{,} \PY{n}{node\PYZus{}i}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Calculate the betweenness centrality for each node in a graph from scratch.}
+
+\PY{l+s+sd}{    Betweenness centrality is a measure of the extent to which a node lies on the shortest}
+\PY{l+s+sd}{    paths between other nodes in the network. This function computes the betweenness}
+\PY{l+s+sd}{    centrality for all nodes in the graph `G`.}
+
+\PY{l+s+sd}{    Parameters}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.Graph}
+\PY{l+s+sd}{        The input graph on which the betweenness centrality is calculated. It can}
+\PY{l+s+sd}{        be any type of graph (undirected, directed, etc.) supported by NetworkX.}
+
+\PY{l+s+sd}{    node\PYZus{}i : networkx.Node}
+\PY{l+s+sd}{        The input node on which the betweenness centrality is calculated.}
+
+\PY{l+s+sd}{    Returns}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    centrality : float}
+\PY{l+s+sd}{        A float where the value is the corresponding betweenness centrality score as a function of the total number of nodes N, the total number of geodesics for all pairs of nodes in  graph G, and the number of geodesics node\PYZus{}i is part of in said graph, G.}
+
+
+\PY{l+s+sd}{    Time Complexity}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    The overall time complexity is O(N\PYZca{}2) where N is the number of nodes, due to the use of}
+\PY{l+s+sd}{    combinations(G.nodes(), 2) dominating, which provides all \PYZdq{}N choose 2\PYZdq{} pairs of nodes.}
+
+\PY{l+s+sd}{    Notes}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    If unweighted, networkx\PYZsq{}s all\PYZus{}shortest\PYZus{}paths() uses Breadth\PYZhy{}First Search which is O(N), if weighted though, nx.all\PYZus{}shortest\PYZus{}paths() defaults to}
+\PY{l+s+sd}{    Dijkstra\PYZsq{}s which is O(E*N*log(N)), and if negative weights exist then it is O(N*E) due to Bellman\PYZhy{}Ford. All where N is the number of nodes, where E is}
+\PY{l+s+sd}{    the number of edges.}
+\PY{l+s+sd}{    https://networkx.org/documentation/stable/\PYZus{}modules/networkx/algorithms/shortest\PYZus{}paths/unweighted.html}
+
+\PY{l+s+sd}{    Citations}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    Freeman, Linton C. “A Set of Measures of Centrality Based on Betweenness.” Sociometry, vol. 40, no. 1, 1977, pp. 35–41. JSTOR, https://doi.org/10.2307/3033543. Accessed 6 Oct. 2026.}
+
+\PY{l+s+sd}{    Example}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} import networkx as nx}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = nx.karate\PYZus{}club\PYZus{}graph()}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} node\PYZus{}i = 3}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} betweenness\PYZus{}centrality\PYZus{}from\PYZus{}scratch(kcg, node\PYZus{}i)}
+\PY{l+s+sd}{    (3, 0.011909271284271286)}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+    \PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{itertools}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{combinations}
+    \PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{logging}
+
+    \PY{c+c1}{\PYZsh{}Error Handling Section}
+    \PY{c+c1}{\PYZsh{}Check that G is a valid graph}
+    \PY{k}{if} \PY{o+ow}{not} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{G}\PY{p}{,}\PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{)}\PY{p}{:}
+        \PY{k}{raise}  \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Graph provided is not a networkx graph!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}Node not a part of graph}
+    \PY{k}{if} \PY{n}{node\PYZus{}i} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{G}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{k}{raise}  \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Node provided is not in graph!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} Not enough edges}
+    \PY{k}{if} \PY{n}{G}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mi}{1}\PY{p}{:}
+        \PY{k}{raise}  \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Graph provided has no connectivity!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}Catch any errors raised before we start:}
+    \PY{k}{try}\PY{p}{:}
+        \PY{n}{centrality} \PY{o}{=} \PY{l+m+mf}{0.0}
+        \PY{n}{N} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Total number of nodes in the graph}
+    \PY{k}{except} \PY{n+ne}{ValueError}\PY{p}{:}
+        \PY{n}{logging}\PY{o}{.}\PY{n}{debug}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Value Error: Invalid Input}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{e}\PY{p}{)}
+            \PY{n}{logging}\PY{o}{.}\PY{n}{debug}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{other error}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{+w}{    }\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Grabbing C\PYZus{}B(p\PYZus{}k) =\PYZgt{} C\PYZus{}B(node\PYZus{}i) = \PYZdq{}the overall partial betweenness of point p\PYZus{}k.\PYZdq{}}
+\PY{l+s+sd}{    If there is only 1 geodesic (i.e., shortest path) C\PYZus{}B(p\PYZus{}k) is increased by 1.}
+\PY{l+s+sd}{    Otherwise, C\PYZus{}B(p\PYZus{}k) is increased relative to the proportion of geodesics p\PYZus{}k is apart of}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{k}{for} \PY{n}{a}\PY{p}{,} \PY{n}{b} \PY{o+ow}{in} \PY{n}{combinations}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}              \PY{c+c1}{\PYZsh{}For all \PYZdq{}n choose 2\PYZdq{} pairs of nodes...}
+        \PY{k}{if} \PY{n}{node\PYZus{}i} \PY{o+ow}{in} \PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}Excluding cases where node\PYZus{}i is one of those nodes.}
+            \PY{k}{continue}
+        \PY{k}{try}\PY{p}{:}
+            \PY{n}{paths} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{all\PYZus{}shortest\PYZus{}paths}\PY{p}{(}\PY{n}{G}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}... compute all possible shortest paths from this pair}
+        \PY{k}{except} \PY{n}{nx}\PY{o}{.}\PY{n}{NetworkXNoPath}\PY{p}{:}
+            \PY{k}{continue}
+        \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{e}\PY{p}{)}
+            \PY{n}{logging}\PY{o}{.}\PY{n}{debug}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{other error}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+        \PY{n}{g\PYZus{}ab} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{paths}\PY{p}{)}                                \PY{c+c1}{\PYZsh{}The total number of geodesics}
+        \PY{n}{g\PYZus{}ab\PYZus{}i} \PY{o}{=} \PY{l+m+mi}{0}                                       \PY{c+c1}{\PYZsh{}The number of geodesics with node\PYZus{}i in them}
+
+        \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{paths}\PY{p}{:} \PY{c+c1}{\PYZsh{}For all geodesics (shortest paths)...}
+            \PY{k}{if} \PY{n}{node\PYZus{}i} \PY{o+ow}{in} \PY{n}{p}\PY{p}{:}\PY{c+c1}{\PYZsh{}...if node\PYZus{}i is in a geodesic...}
+                \PY{n}{g\PYZus{}ab\PYZus{}i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{}... count it!}
+        \PY{k}{if}\PY{p}{(}\PY{n}{g\PYZus{}ab\PYZus{}i}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+            \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Value Error: node\PYZus{}i not on any geodesics!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k}{try}\PY{p}{:}
+            \PY{n}{centrality} \PY{o}{+}\PY{o}{=} \PY{n}{g\PYZus{}ab\PYZus{}i} \PY{o}{/} \PY{n}{g\PYZus{}ab} \PY{c+c1}{\PYZsh{}C\PYZus{}B(node\PYZus{}i), the sum, of the proportion of geodesics node\PYZus{}i is a part of, for all \PYZdq{}n choose 2\PYZdq{} combinations}
+        \PY{k}{except} \PY{n+ne}{ValueError}\PY{p}{:}
+            \PY{n}{logging}\PY{o}{.}\PY{n}{debug}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Value Error: Invalid Input}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+                \PY{n+nb}{print}\PY{p}{(}\PY{n}{e}\PY{p}{)}
+                \PY{n}{logging}\PY{o}{.}\PY{n}{debug}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{other error}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{max\PYZus{}centrality} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{N}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{N}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{} max possible betweenness centrality}
+    \PY{n}{centrality} \PY{o}{=} \PY{n}{centrality}\PY{o}{/}\PY{n}{max\PYZus{}centrality} \PY{c+c1}{\PYZsh{} betweeness centrality of node\PYZus{}i relative to the max possible betweeness centrality of \PYZsq{}G\PYZsq{}}
+    \PY{k}{return} \PY{n}{centrality}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Compare your function to the corresponding networkx function across
+  several graphs you design as test inputs, including one with no
+  connectivity. Does your function ever return different results from
+  the networkx function? Why do you think this is the case?
+\end{enumerate}
+
+    \emph{In my first attempt, my version only aligned relatively speaking,
+where I produced slightly different values and orders than then one in
+networkX. E.g., I calculated node 2 to be the 2nd most central while
+networkx did so for node 33. Now however, I have it fixed and I believe
+it aligns fully!}
+
+\emph{Originally I didn't think of cases where there may be multiple
+equally valid shortest paths between 2 nodes, where node\_i is only on a
+portion of said valid list of shortest paths.}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Putting it all together: Write a function that takes a centrality
+  function as input and tests the function for robustness to edge cases
+  (like a graph with no connectivity) and correctness of outputs.
+  Explain why you selected the test cases you chose.
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{n}{kcg} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{karate\PYZus{}club\PYZus{}graph}\PY{p}{(}\PY{p}{)}
+\PY{n}{node\PYZus{}i} \PY{o}{=} \PY{l+m+mi}{3}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{kcg}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}class\PYZus{}\PYZus{}}\PY{p}{)}
+\PY{n}{betweenness\PYZus{}centrality} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+
+
+\PY{c+c1}{\PYZsh{}Check valid graph}
+\PY{n}{betweenness\PYZus{}centrality\PYZus{}from\PYZus{}scratch}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{node\PYZus{}i}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}Check valid node}
+\PY{n}{betweenness\PYZus{}centrality\PYZus{}from\PYZus{}scratch}\PY{p}{(}\PY{n}{kcg}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{)}
+
+
+\PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+\PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}nodes\PYZus{}from}\PY{p}{(}\PY{n+nb}{reversed}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{subgraph}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Check valid connectivity}
+\PY{n}{node\PYZus{}i}\PY{o}{=}\PY{l+m+mi}{1}
+\PY{n}{betweenness\PYZus{}centrality\PYZus{}from\PYZus{}scratch}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{subgraph}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{n}{node\PYZus{}i}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'networkx.classes.graph.Graph'>
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}, frame=single, framerule=2mm, rulecolor=\color{outerrorbackground}]
+\textcolor{ansi-red}{---------------------------------------------------------------------------}
+\textcolor{ansi-red}{ValueError}                                Traceback (most recent call last)
+\textcolor{ansi-cyan}{Cell}\textcolor{ansi-cyan}{ }\textcolor{ansi-green}{In[8]}\textcolor{ansi-green}{, line 10}
+\textcolor{ansi-green}{      6} betweenness\_centrality = \{\}
+\textcolor{ansi-green}{      7} 
+\textcolor{ansi-green}{      8} 
+\textcolor{ansi-green}{      9} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\#Check valid graph}
+\textcolor{ansi-green}{---> }\textcolor{ansi-green}{10} betweenness\_centrality\_from\_scratch(\textcolor{ansi-green}{1}, node\_i)
+\textcolor{ansi-green}{     11} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\#Check valid node}
+\textcolor{ansi-green}{     12} betweenness\_centrality\_from\_scratch(kcg, \textcolor{ansi-green}{50})
+\textcolor{ansi-green}{     13} 
+
+\textcolor{ansi-cyan}{Cell}\textcolor{ansi-cyan}{ }\textcolor{ansi-green}{In[7]}\textcolor{ansi-green}{, line 55}, in \textcolor{ansi-cyan}{betweenness\_centrality\_from\_scratch}\textcolor{ansi-blue}{(G, node\_i)}
+\textcolor{ansi-green}{     51} 
+\textcolor{ansi-green}{     52}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\#Error Handling Section}
+\textcolor{ansi-green}{     53}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\#Check that G is a valid graph}
+\textcolor{ansi-green}{     54}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{if}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{not}} isinstance(G,nx.Graph):
+\textcolor{ansi-green}{---> }\textcolor{ansi-green}{55}         \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{raise}}  ValueError(\textcolor{ansi-yellow}{"Graph provided is not a networkx graph!"})
+\textcolor{ansi-green}{     56}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\#Node not a part of graph}
+\textcolor{ansi-green}{     57}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{if}} node\_i \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{not}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{in}} G.nodes():
+\textcolor{ansi-green}{     58}         \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{raise}}  ValueError(\textcolor{ansi-yellow}{"Node provided is not in graph!"})
+
+\textcolor{ansi-red}{ValueError}: Graph provided is not a networkx graph!
+    \end{Verbatim}
+
+    I picked 3 kinds of test cases and therefore errors to handle with my
+code. I focused in on input based errors: namely the Graph not being a
+valid nx.Graph() object, the Graph being valid but enough data to
+perform the centrality measure, and the node of interest not being a
+part of the graph, or alternatively not being within any of the shortest
+paths. I did these 3 cases as I figured this is where the bulk of the
+edge cases may lie, and as a back up, in case an exception I did not
+think of shows up, I attempt to catch for exceptions writ-large. This
+helps give more aid to the user of my function such that it is easier to
+use and debug code that leverages it. It also ensures a level of
+robustness and reliability via the back-up general exception.
+
+    \paragraph{Question 4 (20 points).}\label{question-4-20-points.}
+
+Download a network dataset from https://networkrepository.com/ with
+between 1, 000 \textless{} N \textless{} 20, 000 nodes, and explore it
+as described below.
+
+I am using the following dataset on Facebook Artist Pages: Rossi, R., \&
+Ahmed, N. (2015). The Network Data Repository with Interactive Graph
+Analytics and Visualization. Proceedings of the AAAI Conference on
+Artificial Intelligence, 29(1). https://doi.org/10.1609/aaai.v29i1.9277
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+
+\PY{n}{friendships} \PY{o}{=}\PY{n}{nx}\PY{o}{.}\PY{n}{read\PYZus{}edgelist}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{data/soc\PYZhy{}hamsterster/soc\PYZhy{}hamsterster.edges}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  In 2-5 sentences, describe your network. What are the nodes, what are
+  the links, what domain is it from? Be sure to include appropriate
+  citation(s) to the original dataset or research paper, if relevant.
+\end{enumerate}
+
+    My network consists of friendships from the hamsterster website (Rossi,
+R., \& Ahmed, N. (2015). The Network Data Repository with Interactive
+Graph Analytics and Visualization. Proceedings of the AAAI Conference on
+Artificial Intelligence, 29(1).
+https://doi.org/10.1609/aaai.v29i1.9277). According to the documentation
+found at https://networkrepository.com/soc-hamsterster.php, the network
+reflects friendships and family links between users on the website.
+Where each node is a user, and each edge a frienship.
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Compare your network's properties to those of a randomized network, by
+  selecting a network null model to compare against. Your null model
+  should preserve the degree distribution of the network, so randomize
+  your network using e.g.~a configuration model or degree-preserving
+  network rewiring (see Class 4).
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  \begin{enumerate}
+  \def\labelenumi{\roman{enumi}.}
+  \tightlist
+  \item
+    Create a figure with three subplots, corresponding to three
+    distributions of your network; write brief interpretations of what
+    you observe. These can be distributions of node properties
+    (i.e.~degree, centrality measures, etc.) or edge properties
+    (i.e.~edge weights). Be sure to bin these distributions
+    appropriately.
+  \end{enumerate}
+\item
+  ii. Create an analogous figure for the randomized version of your
+  network; write brief interpretations of what you observe.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{n}{N} \PY{o}{=} \PY{n}{friendships}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}
+\PY{n}{L} \PY{o}{=} \PY{n}{friendships}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{L: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{L}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+N:  2426
+L:  16630
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{deg} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{friendships}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{avg\PYZus{}deg} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{deg}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg\PYZus{}deg: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{avg\PYZus{}deg}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+avg\_deg:  13.709810387469085
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{closeness\PYZus{}centrality} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{closeness\PYZus{}centrality}\PY{p}{(}\PY{n}{friendships}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{C\PYZus{}i} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{clustering}\PY{p}{(}\PY{n}{friendships}\PY{p}{)}
+\PY{n}{avg\PYZus{}C\PYZus{}i} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{C\PYZus{}i}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Average C\PYZus{}i: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{avg\PYZus{}C\PYZus{}i}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Average C\_i:  0.5375333362074076
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{,} \PY{n}{return\PYZus{}simple}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Generate a random graph using the configuration model from a given degree sequence}
+\PY{l+s+sd}{    without using the NetworkX built\PYZhy{}in function.}
+
+\PY{l+s+sd}{    The configuration model generates a random graph that preserves the degree}
+\PY{l+s+sd}{    sequence of nodes by assigning \PYZdq{}stubs\PYZdq{} or \PYZdq{}half\PYZhy{}edges\PYZdq{} to each node and}
+\PY{l+s+sd}{    randomly pairing these stubs to form edges. This process can result in}
+\PY{l+s+sd}{    graphs with self\PYZhy{}loops and parallel edges, which can be removed if needed.}
+
+\PY{l+s+sd}{    Parameters}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    degree\PYZus{}sequence : list of int}
+\PY{l+s+sd}{        A list representing the degree of each node in the graph. The sum of}
+\PY{l+s+sd}{        the degrees in this sequence must be even for the configuration model}
+\PY{l+s+sd}{        to create a valid graph.}
+
+\PY{l+s+sd}{    Returns}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.MultiGraph}
+\PY{l+s+sd}{        A multigraph generated from the given degree sequence. The graph may}
+\PY{l+s+sd}{        contain self\PYZhy{}loops and parallel edges, which are allowed in the}
+\PY{l+s+sd}{        configuration model.}
+
+\PY{l+s+sd}{    Notes}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZhy{} This method works by assigning \PYZdq{}stubs\PYZdq{} or \PYZdq{}half\PYZhy{}edges\PYZdq{} to nodes based on}
+\PY{l+s+sd}{      their degree and then randomly pairing them to form edges. The resulting}
+\PY{l+s+sd}{      graph can have self\PYZhy{}loops and parallel edges.}
+\PY{l+s+sd}{    \PYZhy{} Self\PYZhy{}loops and parallel edges can be removed post\PYZhy{}generation if a simple}
+\PY{l+s+sd}{      graph is required using NetworkX\PYZsq{}s `nx.Graph(G)`.}
+\PY{l+s+sd}{    \PYZhy{} The degree sequence must have an even sum for a valid graph construction.}
+\PY{l+s+sd}{      If the sum of the degrees is odd, no graph can be constructed.}
+
+\PY{l+s+sd}{    Time Complexity}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    The time complexity is O(E), where E is the number of edges in the graph.}
+
+\PY{l+s+sd}{    Example}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} degree\PYZus{}sequence = [3, 3, 2, 2, 1, 1]}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence(degree\PYZus{}sequence)}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} nx.is\PYZus{}graphical(degree\PYZus{}sequence)}
+\PY{l+s+sd}{    True}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+
+    \PY{c+c1}{\PYZsh{} Check if the degree sequence is valid (sum of degrees must be even)}
+    \PY{k}{if} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{l+m+mi}{2} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The sum of the degree sequence must be even.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Create stubs list: node i appears degree\PYZus{}sequence[i] times}
+    \PY{n}{stubs} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{node}\PY{p}{,} \PY{n}{degree} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)}\PY{p}{:}
+        \PY{n}{stubs}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{p}{[}\PY{n}{node}\PY{p}{]} \PY{o}{*} \PY{n}{degree}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Shuffle stubs to randomize the pairing process}
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{shuffle}\PY{p}{(}\PY{n}{stubs}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Initialize an empty multigraph}
+    \PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{MultiGraph}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add nodes to the graph}
+    \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}nodes\PYZus{}from}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Pair stubs to create edges}
+    \PY{k}{while} \PY{n}{stubs}\PY{p}{:}
+        \PY{n}{u} \PY{o}{=} \PY{n}{stubs}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{p}{)}
+        \PY{n}{v} \PY{o}{=} \PY{n}{stubs}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Add the edge to the graph}
+        \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{)}
+
+    \PY{k}{if} \PY{n}{return\PYZus{}simple}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Convert the multigraph to a simple graph (remove parallel edges and self\PYZhy{}loops)}
+        \PY{n}{G\PYZus{}simple} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{n}{G}\PY{p}{)}  \PY{c+c1}{\PYZsh{} This removes parallel edges and self\PYZhy{}loops by default}
+
+        \PY{k}{return} \PY{n}{G\PYZus{}simple}
+
+    \PY{k}{else}\PY{p}{:}
+        \PY{k}{return} \PY{n}{G}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{)}
+
+\PY{n}{deg\PYZus{}bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{deg}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{deg}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{deg}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{deg\PYZus{}bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degree Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degree}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{cen\PYZus{}bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{closeness\PYZus{}centrality}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{closeness\PYZus{}centrality}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{closeness\PYZus{}centrality}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{cen\PYZus{}bins}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Closeness Centrality Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Closeness Centrality}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{xaxis}\PY{o}{.}\PY{n}{set\PYZus{}inverted}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{clu\PYZus{}bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{C\PYZus{}i}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+m+mf}{1e\PYZhy{}4}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{C\PYZus{}i}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{C\PYZus{}i}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{clu\PYZus{}bins}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Clustering Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Clustering Coefficient}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{xaxis}\PY{o}{.}\PY{n}{set\PYZus{}inverted}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}Configuration Model Version}
+\PY{n}{my\PYZus{}null\PYZus{}model} \PY{o}{=} \PY{n}{configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{deg}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{return\PYZus{}simple}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{deg2} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{my\PYZus{}null\PYZus{}model}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{closeness\PYZus{}centrality2} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{closeness\PYZus{}centrality}\PY{p}{(}\PY{n}{my\PYZus{}null\PYZus{}model}\PY{p}{)}
+\PY{n}{C\PYZus{}i2} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{clustering}\PY{p}{(}\PY{n}{my\PYZus{}null\PYZus{}model}\PY{p}{)}
+
+\PY{n}{fig2}\PY{p}{,} \PY{n}{ax2} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{)}
+\PY{n}{deg\PYZus{}bins2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{deg2}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{deg2}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{deg2}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{deg\PYZus{}bins2}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degree Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degree}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{cen\PYZus{}bins2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{closeness\PYZus{}centrality2}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{closeness\PYZus{}centrality2}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{closeness\PYZus{}centrality2}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{cen\PYZus{}bins2}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Closeness Centrality Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Closeness Centrality}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{xaxis}\PY{o}{.}\PY{n}{set\PYZus{}inverted}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{clu\PYZus{}bins2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{C\PYZus{}i2}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+m+mf}{1e\PYZhy{}4}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{C\PYZus{}i2}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{C\PYZus{}i2}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{clu\PYZus{}bins2}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Clustering Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Clustering Coefficient}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{xaxis}\PY{o}{.}\PY{n}{set\PYZus{}inverted}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{ax2}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{fig2}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_assignment01_files/Hughes_assignment01_41_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_assignment01_files/Hughes_assignment01_41_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    In my original dataset of friendships we can see the degree distribution
+appears to follow a truncated power-law, with low-degree nodes occurring
+commonly and high degree nodes occurring less and less commonly as
+degree increases. Meanwhile, my closeness centrality appears to fall
+into 2 buckets: very close or not very close, with both being on the
+same order of magnitude in terms of probability to occur. Lastly, my
+clustering coefficient is commonly high across all nodes, with a steep
+drop off in probability of occurrence as soon as the clustering
+coefficient begins to dip below 0.01.
+
+In my configuration null model, we can see all these trends maintain
+present albeit with some marginal differences. Namely, some of the
+degree distribution between 10 and 100 appears slightly less probable in
+the configuration model, and similarly high closeness centrality is a
+little less probable than low closeness centrality (\emph{relative to
+the original dataset}). Lastly, the clustering coefficient becomes most
+common at a slightly lower value than the original dataset. This may
+indicate that the original dataset was perhaps tighter knit relative to
+the configuration model version, and thereby experienced slightly higher
+degree, closeness and clustering as a result.
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Discuss the similarities and/or differences between your network
+  dataset and the randomized versions of this network. How does this
+  exercise---comparing network data to a null model---help us gain
+  insights from network analysis?
+\end{enumerate}
+
+    The general trends in the datasets remained consistent: the degree
+distribution resembling a truncated power law, the closeness centrality
+falling into high and low buckets, and the clustering being generally
+high. The main differences arose in the extent to which these trends
+appeared, with the configuration model (i.e., randomized) version,
+experiencing slightly lower probabilities for high centrality, high
+clustering and high degreee (\emph{relatively speaking}).
+
+Overall this exercise helps us gain insights into from networks
+analysis, as it allows us to characterize how this network may be
+different or unique from what is expected at random (\emph{even if it's
+only a marginal that difference may be present}). It also allows us to
+speculate and hypothesize how a network may be different, when we notice
+a theme of marginal differences across different measures.
+
+    \paragraph{(Optional) Question 5 (5 bonus
+points).}\label{optional-question-5-5-bonus-points.}
+
+For every problem set this semester, there will be an opportunity to
+earn extra credit. Since this is a fairly new course (of a new masters
+program), we are eager to receive genuine feedback on the material,
+pace, instruction style, etc. of the course so far. Note: Learning how
+to give effective feedback is an important skill during your PhD, so we
+hope this is an opportunity for you to skill-build and improve the
+course for future students. (Also, it's a bit odd to be evaluated on on
+how good your feedback is, so we will be generous with awarding points
+for these. With that said, please take some time to provide us with
+productive comments!) If you need resources for giving effective
+feedback, here are a few: *
+https://hbr.org/2017/10/how-to-give-feedback-people-can-actually-use *
+https://www.sessionlab.com/blog/feedback-techniques/
+
+    I'm honestly really enjoying the course so far! I'm learning a lot and I
+especially appreciate the in-class coding exercises we have been doing
+lately. Despite working in data science, I've never been the strongest
+coder, so I tend to take a fair amount of time to think and get through
+problems, but it's because of that, that I think I feel that much more
+confident in the material in the practice of it all. I think in that
+sense the pro-active nature of the course has been a strong asset, in
+that it was good there was the foresight to see that adding in exercises
+could be worthwhile! I think similarly the capacity there has been to
+allow lectures to speed-up or slow-down, ask questions, and go on
+tangents and really explore and play with the material has added a lot
+of value and is very appreciated! I can see a lot of students joining
+and taking this course to study a specific kind of network, or coming in
+with a different background and wanting or needing to know more about
+some topics over others.
+
+I'm afraid I don't have too much constructive criticism for the course
+at the moment. I think if I had to name some it would be, that I've
+noticed that the students outside of my NetSci courses (\emph{right now
+I'm taking 1 other class called Big Data for Cities that has a lot of
+MPP and Structural Engineering kinds of students}) tended to have little
+to no background in coding, so I could see in the future once we get
+more students, we may see students with less background struggling. That
+all being said, I also realize that at the moment we are a small cohort
+and as such there isn't really a huge needed to go slow like that. In
+any case, I mention it just as something to be cognizant of in case it's
+something the course encounters in the future.
+
+Other than that, and this is perhaps nitpick territory, but it could be
+valuable to have any windows specific coding errors mentioned perhaps as
+like a little `heads-up' in some of the code, but it honestly hasn't
+really been a problem at all in my experience. I think I had 1 error in
+reading a file due to Windows but I was able to just tell Python to
+ignore it as an argument to the read() and then it worked fine.
+
+Hope this feedback is of help, and looking forward to the rest of the
+course!
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

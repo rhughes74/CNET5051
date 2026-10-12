@@ -2,20 +2,105 @@
     "python-envs.defaultEnvManager": "ms-python.python:conda",
     "python-envs.defaultPackageManager": "ms-python.python:conda",
     "github.copilot.enable": {
-    "*": false
+      "*": false,
+      "plaintext": false,
+      "markdown": false,
+      "scminput": false
+    },
+    "workbench.tree.indent": 10,
+    "breadcrumbs.enabled": false,
+    "workbench.colorCustomizations": {
+    "tree.indentGuidesStroke": "#ff0000",
+    "tree.inactiveIndentGuidesStroke": "#45b8ac",
     },
     "editor.quickSuggestions": {
-        "other": true,
-        "comments": false,
-        "strings": false
+        "other": "on",
+        "comments": "off",
+        "strings": "offWhenInlineCompletions"
     },
+    "terminal.integrated.cursorStyle": "line",
+    "terminal.integrated.cursorWidth": 1,
+    "window.commandCenter": false,
+    "terminal.integrated.cursorBlinking": true,
+    "scm.inputFontFamily": "'Cascadia Code', Consolas, monospace",
     "github.copilot.nextEditSuggestions.enabled": false,
-    "editor.quickSuggestions": {
-        "other": true,
-        "comments": false,
-        "strings": false
-    },
     "editor.suggestOnTriggerCharacters": true,
     "editor.inlineSuggest.enabled": true,
-    "python.analysis.autoImportCompletions" : true
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "standard",
+    "chat.agent.enabled": false,
+    "terminal.integrated.initialHint": false,
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.showFoldingControls": "always",
+    "explorer.decorations.badges": false,
+    "explorer.decorations.colors": false,
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+      "*.scss": "${capture}.css",
+      ".eslintrc.*": ".eslintignore, .editorconfig, .prettierrc",
+      "appsettings.json": "appsettings.*.json"
+    },
+    "better-comments.tags": [
+  {
+    "tag": "!",
+    "color": "#FF6961",
+    "strikethrough": false,
+    "underline": false,
+    "backgroundColor": "transparent",
+    "bold": false,
+    "italic": false
+  },
+  {
+    "tag": "?",
+    "color": "#AEC6CF",
+    "strikethrough": false,
+    "underline": false,
+    "backgroundColor": "transparent",
+    "bold": false,
+    "italic": false
+  },
+  {
+    "tag": "//",
+    "color": "#474747",
+    "strikethrough": true,
+    "underline": false,
+    "backgroundColor": "transparent",
+    "bold": false,
+    "italic": false
+  },
+  {
+    "tag": "[]",
+    "color": "#FEFE95",
+    "strikethrough": false,
+    "underline": false,
+    "backgroundColor": "transparent",
+    "bold": false,
+    "italic": false
+  },
+  {
+    "tag": "[x]",
+    "color": "#FEFE95",
+    "strikethrough": true,
+    "underline": false,
+    "backgroundColor": "transparent",
+    "bold": false,
+    "italic": false
+  },
+  {
+    "tag": "*",
+    "color": "#B19CD9",
+    "strikethrough": false,
+    "underline": false,
+    "backgroundColor": "transparent",
+    "bold": false,
+    "italic": false
+  }
+],
+"cSpell.words": [
+  "betweeness",
+  "betweenness",
+  "edgecolors",
+  "hamsterster"
+]
 }
